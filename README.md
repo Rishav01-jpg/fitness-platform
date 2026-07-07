@@ -29,4 +29,4 @@ A production-ready SaaS platform for:
 - Enterprise SaaS
 - White Label
 - Highly Scalable
-- 24×7 Availability
+- 24x7 Availability
