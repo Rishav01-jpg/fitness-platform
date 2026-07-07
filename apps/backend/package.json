@@ -1,0 +1,22 @@
+{
+  "name": "fitness-backend",
+  "version": "0.1.0",
+  "description": "Enterprise Multi-Tenant Fitness SaaS Backend",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "lint": "echo \"Linting will be added later\"",
+    "test": "echo \"Tests will be added later\""
+  },
+  "keywords": [
+    "fitness",
+    "saas",
+    "multi-tenant",
+    "node",
+    "express"
+  ],
+  "author": "Rishav Mishra",
+  "license": "MIT"
+}
