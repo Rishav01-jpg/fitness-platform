@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import User from "./user.model.js";
 import AppError from "../../shared/errors/AppError.js";
+import { generateToken } from "../../utils/jwt.js";
 
 const registerUser = async (userData) => {
   const { email, phone, password } = userData;
@@ -35,4 +36,43 @@ const registerUser = async (userData) => {
   return user;
 };
 
-export { registerUser };
+// Login User
+const loginUser = async (loginData) => {
+  const { email, phone, password } = loginData;
+
+  let user;
+
+  if (email) {
+    user = await User.findOne({ email });
+  } else {
+    user = await User.findOne({ phone });
+  }
+
+  if (!user) {
+    throw new AppError("Invalid email/phone or password", 401);
+  }
+
+  const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordMatch) {
+    throw new AppError("Invalid email/phone or password", 401);
+  }
+
+  const token = generateToken({
+    userId: user._id,
+    role: user.role,
+    tenantId: user.tenantId,
+    dashboardId: user.dashboardId,
+  });
+
+  const userObject = user.toObject();
+
+  delete userObject.password;
+
+  return {
+    user: userObject,
+    token,
+  };
+};
+
+export { registerUser, loginUser };

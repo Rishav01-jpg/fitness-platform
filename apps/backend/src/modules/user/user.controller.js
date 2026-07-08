@@ -2,6 +2,8 @@ import asyncHandler from "../../shared/utils/asyncHandler.js";
 import successResponse from "../../shared/responses/successResponse.js";
 import { registerSchema } from "./user.validation.js";
 import { registerUser } from "./user.service.js";
+import { loginSchema } from "./user.validation.js";
+import { loginUser } from "./user.service.js";
 
 const register = asyncHandler(async (req, res) => {
   // Validate request
@@ -24,4 +26,20 @@ const register = asyncHandler(async (req, res) => {
   );
 });
 
-export { register };
+
+
+const login = asyncHandler(async (req, res) => {
+  // Validate request
+  const validatedData = loginSchema.parse(req.body);
+
+  // Login user
+  const result = await loginUser(validatedData);
+
+  return successResponse(
+    res,
+    result,
+    "Login successful",
+    200
+  );
+});
+export { register, login };
