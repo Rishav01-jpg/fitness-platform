@@ -55,10 +55,10 @@ const tenantSchema = new mongoose.Schema(
 
     // Owner (Admin)
     owner: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "User",
+  default: null,
+},
 
     // Subscription
     plan: {

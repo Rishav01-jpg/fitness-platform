@@ -5,6 +5,11 @@ export const PERMISSIONS = {
   DELETE_TENANT: "delete_tenant",
   VIEW_TENANT: "view_tenant",
 
+  // Subscription
+CREATE_SUBSCRIPTION: "create_subscription",
+UPDATE_SUBSCRIPTION: "update_subscription",
+DELETE_SUBSCRIPTION: "delete_subscription",
+VIEW_SUBSCRIPTION: "view_subscription",
   // Dashboard
   CREATE_DASHBOARD: "create_dashboard",
   UPDATE_DASHBOARD: "update_dashboard",
