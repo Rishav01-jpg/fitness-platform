@@ -40,6 +40,12 @@ VIEW_SUBSCRIPTION: "view_subscription",
   DELETE_CLIENT: "delete_client",
   VIEW_CLIENT: "view_client",
 
+  // Membership
+CREATE_MEMBERSHIP: "create_membership",
+UPDATE_MEMBERSHIP: "update_membership",
+DELETE_MEMBERSHIP: "delete_membership",
+VIEW_MEMBERSHIP: "view_membership",
+
   // Workouts
   CREATE_WORKOUT: "create_workout",
   UPDATE_WORKOUT: "update_workout",

@@ -10,60 +10,59 @@ import { ROLES } from "../../constants/roles.js";
 import { PERMISSIONS } from "../../constants/permissions.js";
 
 import {
-  createClient,
-  getAllClients,
-  getClientById,
-  updateClient,
-  softDeleteClient,
-} from "./client.controller.js";
+  createMembership,
+  getAllMemberships,
+  getMembershipById,
+  updateMembership,
+  cancelMembership,
+} from "./membership.controller.js";
 
 const router = express.Router();
 
-//get all clients
 router.get(
   "/",
   authenticate,
   authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
-  hasPermission(PERMISSIONS.VIEW_CLIENT),
-  getAllClients
+  hasPermission(PERMISSIONS.VIEW_MEMBERSHIP),
+  getAllMemberships
 );
 
 router.get(
-  "/:clientId",
+  "/:membershipId",
   authenticate,
   authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
-  hasPermission(PERMISSIONS.VIEW_CLIENT),
-  getClientById
+  hasPermission(PERMISSIONS.VIEW_MEMBERSHIP),
+  getMembershipById
+);
+
+router.put(
+  "/:membershipId",
+  authenticate,
+ authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
+  hasPermission(PERMISSIONS.UPDATE_MEMBERSHIP),
+  checkTenantStatus,
+  checkSubscription,
+  updateMembership
 );
 
 router.post(
   "/",
   authenticate,
   authorize(ROLES.ADMIN),
-  hasPermission(PERMISSIONS.CREATE_CLIENT),
+  hasPermission(PERMISSIONS.CREATE_MEMBERSHIP),
   checkTenantStatus,
   checkSubscription,
-  createClient
-);
-
-router.put(
-  "/:clientId",
-  authenticate,
-  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
-  hasPermission(PERMISSIONS.UPDATE_CLIENT),
-  checkTenantStatus,
-  checkSubscription,
-  updateClient
+  createMembership
 );
 
 router.delete(
-  "/:clientId",
+  "/:membershipId",
   authenticate,
   authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
-  hasPermission(PERMISSIONS.DELETE_CLIENT),
+  hasPermission(PERMISSIONS.DELETE_MEMBERSHIP),
   checkTenantStatus,
   checkSubscription,
-  softDeleteClient
+  cancelMembership
 );
 
 export default router;
