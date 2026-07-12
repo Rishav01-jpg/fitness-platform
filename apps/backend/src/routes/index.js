@@ -8,6 +8,7 @@ import trainerRoutes from "../modules/trainer/index.js";
 import dietitianRoutes from "../modules/dietitian/index.js";
 import clientRoutes from "../modules/client/index.js";
 import membershipRoutes from "../modules/membership/index.js";
+import workoutRoutes from "../modules/workout/index.js";
 
 const router = express.Router();
 
@@ -20,4 +21,5 @@ router.use("/trainers", trainerRoutes);
 router.use("/dietitians", dietitianRoutes);
 router.use("/clients", clientRoutes);
 router.use("/memberships", membershipRoutes);
+router.use("/workouts", workoutRoutes);
 export default router;
