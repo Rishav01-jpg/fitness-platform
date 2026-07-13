@@ -10,59 +10,73 @@ import { ROLES } from "../../constants/roles.js";
 import { PERMISSIONS } from "../../constants/permissions.js";
 
 import {
-  createWorkout,
-  getAllWorkouts,
-  getWorkoutById,
-  updateWorkout,
-  deleteWorkout,
-} from "./workout.controller.js";
+  createExercise,
+  getAllExercises,
+  getExerciseById,
+  updateExercise,
+  deleteExercise,
+} from "./exercise.controller.js";
 
 const router = express.Router();
 
 router.get(
   "/",
   authenticate,
-  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
-  hasPermission(PERMISSIONS.VIEW_WORKOUT),
-  getAllWorkouts
+  authorize(
+    ROLES.SUPER_ADMIN,
+    ROLES.ADMIN,
+    ROLES.TRAINER
+  ),
+  hasPermission(PERMISSIONS.VIEW_EXERCISE),
+  getAllExercises
 );
 
 router.get(
-  "/:workoutId",
+  "/:exerciseId",
   authenticate,
-  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
-  hasPermission(PERMISSIONS.VIEW_WORKOUT),
-  getWorkoutById
-);
-
-router.put(
-  "/:workoutId",
-  authenticate,
-  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
-  hasPermission(PERMISSIONS.UPDATE_WORKOUT),
-  checkTenantStatus,
-  checkSubscription,
-  updateWorkout
+  authorize(
+    ROLES.SUPER_ADMIN,
+    ROLES.ADMIN,
+    ROLES.TRAINER
+  ),
+  hasPermission(PERMISSIONS.VIEW_EXERCISE),
+  getExerciseById
 );
 
 router.post(
   "/",
   authenticate,
-  authorize(ROLES.ADMIN, ROLES.TRAINER),
-  hasPermission(PERMISSIONS.CREATE_WORKOUT),
+  authorize(ROLES.ADMIN),
+  hasPermission(PERMISSIONS.CREATE_EXERCISE),
   checkTenantStatus,
   checkSubscription,
-  createWorkout
+  createExercise
+);
+
+router.put(
+  "/:exerciseId",
+  authenticate,
+  authorize(
+    ROLES.SUPER_ADMIN,
+    ROLES.ADMIN
+  ),
+  hasPermission(PERMISSIONS.UPDATE_EXERCISE),
+  checkTenantStatus,
+  checkSubscription,
+  updateExercise
 );
 
 router.delete(
-  "/:workoutId",
+  "/:exerciseId",
   authenticate,
-  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
-  hasPermission(PERMISSIONS.DELETE_WORKOUT),
+  authorize(
+    ROLES.SUPER_ADMIN,
+    ROLES.ADMIN
+  ),
+  hasPermission(PERMISSIONS.DELETE_EXERCISE),
   checkTenantStatus,
   checkSubscription,
-  deleteWorkout
+  deleteExercise
 );
 
 export default router;
