@@ -10,6 +10,7 @@ import clientRoutes from "../modules/client/index.js";
 import membershipRoutes from "../modules/membership/index.js";
 import workoutRoutes from "../modules/workout/index.js";
 import exerciseRoutes from "../modules/exercise/index.js";
+import workoutExerciseRoutes from "../modules/workoutExercise/index.js";
 
 const router = express.Router();
 
@@ -24,4 +25,5 @@ router.use("/clients", clientRoutes);
 router.use("/memberships", membershipRoutes);
 router.use("/workouts", workoutRoutes);
 router.use("/exercises", exerciseRoutes);
+router.use("/workout-exercises",workoutExerciseRoutes);
 export default router;
