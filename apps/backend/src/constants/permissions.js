@@ -52,6 +52,12 @@ VIEW_MEMBERSHIP: "view_membership",
   DELETE_WORKOUT: "delete_workout",
   VIEW_WORKOUT: "view_workout",
 
+  // Workout Exercise
+CREATE_WORKOUT_EXERCISE: "create_workout_exercise",
+UPDATE_WORKOUT_EXERCISE: "update_workout_exercise",
+DELETE_WORKOUT_EXERCISE: "delete_workout_exercise",
+VIEW_WORKOUT_EXERCISE: "view_workout_exercise",
+
   // Exercise
 CREATE_EXERCISE: "create_exercise",
 UPDATE_EXERCISE: "update_exercise",
