@@ -11,6 +11,7 @@ import membershipRoutes from "../modules/membership/index.js";
 import workoutRoutes from "../modules/workout/index.js";
 import exerciseRoutes from "../modules/exercise/index.js";
 import workoutExerciseRoutes from "../modules/workoutExercise/index.js";
+import attendanceRoutes from "../modules/attendance/index.js";
 
 const router = express.Router();
 
@@ -26,4 +27,6 @@ router.use("/memberships", membershipRoutes);
 router.use("/workouts", workoutRoutes);
 router.use("/exercises", exerciseRoutes);
 router.use("/workout-exercises",workoutExerciseRoutes);
+router.use("/attendance", attendanceRoutes);
+
 export default router;

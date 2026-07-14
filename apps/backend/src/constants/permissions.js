@@ -69,4 +69,10 @@ VIEW_EXERCISE: "view_exercise",
   UPDATE_DIET_PLAN: "update_diet_plan",
   DELETE_DIET_PLAN: "delete_diet_plan",
   VIEW_DIET_PLAN: "view_diet_plan",
+
+  // Attendance
+CREATE_ATTENDANCE: "create_attendance",
+UPDATE_ATTENDANCE: "update_attendance",
+DELETE_ATTENDANCE: "delete_attendance",
+VIEW_ATTENDANCE: "view_attendance",
 };
