@@ -75,4 +75,16 @@ CREATE_ATTENDANCE: "create_attendance",
 UPDATE_ATTENDANCE: "update_attendance",
 DELETE_ATTENDANCE: "delete_attendance",
 VIEW_ATTENDANCE: "view_attendance",
+
+// Progress
+CREATE_PROGRESS: "create_progress",
+UPDATE_PROGRESS: "update_progress",
+DELETE_PROGRESS: "delete_progress",
+VIEW_PROGRESS: "view_progress",
+
+// Payment
+CREATE_PAYMENT: "create_payment",
+UPDATE_PAYMENT: "update_payment",
+DELETE_PAYMENT: "delete_payment",
+VIEW_PAYMENT: "view_payment",
 };
