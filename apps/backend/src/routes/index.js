@@ -14,6 +14,7 @@ import workoutExerciseRoutes from "../modules/workoutExercise/index.js";
 import attendanceRoutes from "../modules/attendance/index.js";
 import progressRoutes from "../modules/progress/index.js";
 import paymentRoutes from "../modules/payment/index.js";
+import invoiceRoutes from "../modules/invoice/index.js";
 
 const router = express.Router();
 
@@ -32,5 +33,6 @@ router.use("/workout-exercises",workoutExerciseRoutes);
 router.use("/attendance", attendanceRoutes);
 router.use("/progress", progressRoutes);
 router.use("/payments", paymentRoutes);
+router.use("/invoices", invoiceRoutes);
 
 export default router;

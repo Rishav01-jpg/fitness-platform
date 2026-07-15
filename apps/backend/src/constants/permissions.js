@@ -87,4 +87,10 @@ CREATE_PAYMENT: "create_payment",
 UPDATE_PAYMENT: "update_payment",
 DELETE_PAYMENT: "delete_payment",
 VIEW_PAYMENT: "view_payment",
+
+// Invoice
+CREATE_INVOICE: "create_invoice",
+UPDATE_INVOICE: "update_invoice",
+DELETE_INVOICE: "delete_invoice",
+VIEW_INVOICE: "view_invoice",
 };
