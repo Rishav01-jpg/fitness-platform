@@ -15,6 +15,10 @@ import attendanceRoutes from "../modules/attendance/index.js";
 import progressRoutes from "../modules/progress/index.js";
 import paymentRoutes from "../modules/payment/index.js";
 import invoiceRoutes from "../modules/invoice/index.js";
+import individualRoutes from "../modules/individual/index.js";
+import expenseRoutes from "../modules/expense/index.js";
+import reportRoutes from "../modules/report/index.js";
+import notificationRoutes from "../modules/notification/index.js";
 
 const router = express.Router();
 
@@ -34,5 +38,8 @@ router.use("/attendance", attendanceRoutes);
 router.use("/progress", progressRoutes);
 router.use("/payments", paymentRoutes);
 router.use("/invoices", invoiceRoutes);
-
+router.use("/individuals",individualRoutes);
+router.use("/expenses",expenseRoutes);
+router.use("/reports",reportRoutes);
+router.use("/notifications",notificationRoutes);
 export default router;

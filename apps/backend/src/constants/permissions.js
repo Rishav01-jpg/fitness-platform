@@ -93,4 +93,46 @@ CREATE_INVOICE: "create_invoice",
 UPDATE_INVOICE: "update_invoice",
 DELETE_INVOICE: "delete_invoice",
 VIEW_INVOICE: "view_invoice",
+
+/* ============================================================
+                    EXPENSE CATEGORY
+============================================================ */
+
+CREATE_EXPENSE_CATEGORY:
+  "CREATE_EXPENSE_CATEGORY",
+
+VIEW_EXPENSE_CATEGORY:
+  "VIEW_EXPENSE_CATEGORY",
+
+UPDATE_EXPENSE_CATEGORY:
+  "UPDATE_EXPENSE_CATEGORY",
+
+DELETE_EXPENSE_CATEGORY:
+  "DELETE_EXPENSE_CATEGORY",
+
+/* ============================================================
+                        EXPENSE
+============================================================ */
+
+CREATE_EXPENSE:
+  "CREATE_EXPENSE",
+
+VIEW_EXPENSE:
+  "VIEW_EXPENSE",
+
+UPDATE_EXPENSE:
+  "UPDATE_EXPENSE",
+
+DELETE_EXPENSE:
+  "DELETE_EXPENSE",
+
+APPROVE_EXPENSE:
+  "APPROVE_EXPENSE",
+
+VIEW_REPORT: "VIEW_REPORT",
+
+CREATE_NOTIFICATION: "CREATE_NOTIFICATION",
+VIEW_NOTIFICATION: "VIEW_NOTIFICATION",
+UPDATE_NOTIFICATION: "UPDATE_NOTIFICATION",
+DELETE_NOTIFICATION: "DELETE_NOTIFICATION",
 };
