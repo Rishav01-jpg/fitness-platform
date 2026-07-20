@@ -1,12 +1,16 @@
 import app from "./app.js";
 import { env } from "./config/env.js";
 import connectDB from "./database/mongodb.js";
+import initializeScheduler from "./modules/scheduler/index.js";
 
 const startServer = async () => {
   try {
     await connectDB();
 
-    app.listen(env.PORT, () => {
+// Start all scheduled jobs
+initializeScheduler();
+
+app.listen(env.PORT, () => {
       console.log("=================================");
       console.log("🚀 Fitness SaaS Backend Started");
       console.log(`🌍 Server Running on Port ${env.PORT}`);

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { TENANT_STATUS } from "../../constants/tenantStatus.js";
 
 const tenantSchema = new mongoose.Schema(
   {
@@ -74,11 +75,11 @@ const tenantSchema = new mongoose.Schema(
     },
 
     // Tenant Status
-    status: {
-      type: String,
-      enum: ["active", "inactive", "suspended"],
-      default: "active",
-    },
+   status: {
+  type: String,
+  enum: Object.values(TENANT_STATUS),
+  default: TENANT_STATUS.ACTIVE,
+},
 
     timezone: {
       type: String,

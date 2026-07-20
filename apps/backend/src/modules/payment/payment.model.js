@@ -106,6 +106,10 @@ balanceAmount: {
   min: 0,
 },
 
+lastReminderSentAt: {
+  type: Date,
+  default: null,
+},
     status: {
       type: String,
       enum: [

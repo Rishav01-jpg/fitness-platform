@@ -110,6 +110,10 @@ const clientSchema = new mongoose.Schema(
       enum: ["ACTIVE", "INACTIVE"],
       default: "ACTIVE",
     },
+    lastBirthdayWishSentAt: {
+  type: Date,
+  default: null,
+},
   },
   {
     timestamps: true,

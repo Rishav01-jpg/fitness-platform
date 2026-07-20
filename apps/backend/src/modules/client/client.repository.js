@@ -44,6 +44,53 @@ const findClientsByTrainer = async (trainerId) => {
 const findClientsByDietitian = async (dietitianId) => {
   return await Client.find({ dietitian: dietitianId });
 };
+// Find clients whose birthday is today
+const findClientsWithBirthdayToday = async () => {
+  const today = new Date();
+
+  const month = today.getMonth() + 1;
+  const day = today.getDate();
+
+  return await Client.aggregate([
+    {
+      $addFields: {
+        birthMonth: {
+          $month: "$dateOfBirth",
+        },
+        birthDay: {
+          $dayOfMonth: "$dateOfBirth",
+        },
+      },
+    },
+    {
+      $match: {
+        status: "ACTIVE",
+        birthMonth: month,
+        birthDay: day,
+      },
+    },
+  ]);
+};
+
+// Count today's new clients
+const countNewClientsToday = async (
+  tenantId
+) => {
+  const start = new Date();
+  start.setHours(0, 0, 0, 0);
+
+  const end = new Date();
+  end.setHours(23, 59, 59, 999);
+
+  return await Client.countDocuments({
+    tenant: tenantId,
+    status: "ACTIVE",
+    createdAt: {
+      $gte: start,
+      $lte: end,
+    },
+  });
+};
 
 // Update client
 const updateClient = async (clientId, updateData) => {
@@ -56,7 +103,20 @@ const updateClient = async (clientId, updateData) => {
     }
   );
 };
-
+// Update birthday wish timestamp
+const updateBirthdayWishSent = async (
+  clientId
+) => {
+  return await Client.findByIdAndUpdate(
+    clientId,
+    {
+      lastBirthdayWishSentAt: new Date(),
+    },
+    {
+      new: true,
+    }
+  );
+};
 // Soft delete client
 const softDeleteClient = async (clientId) => {
   return await Client.findByIdAndUpdate(
@@ -83,4 +143,7 @@ export {
   findClientsByDietitian,
   updateClient,
   softDeleteClient,
+  findClientsWithBirthdayToday,
+updateBirthdayWishSent,
+countNewClientsToday,
 };

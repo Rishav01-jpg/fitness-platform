@@ -67,6 +67,10 @@ const membershipSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    lastReminderSentAt: {
+  type: Date,
+  default: null,
+},
   },
   {
     timestamps: true,
