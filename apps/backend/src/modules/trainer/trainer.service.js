@@ -3,6 +3,8 @@ import AppError from "../../shared/errors/AppError.js";
 import Dashboard from "../dashboard/dashboard.model.js";
 
 import { ROLES } from "../../constants/roles.js";
+import bcrypt from "bcrypt";
+import { generateToken } from "../../utils/jwt.js";
 
 import {
   createTrainer,
@@ -13,6 +15,8 @@ import {
   findTrainersByTenant,
   updateTrainer,
   softDeleteTrainer,
+  findTrainerForLogin,
+updateTrainerPassword,
 } from "./trainer.repository.js";
 
 //create trainer
@@ -62,12 +66,126 @@ const createTrainerService = async (
   }
 
   // Create trainer
-  return await createTrainer({
-    ...trainerData,
-    tenant: user.tenantId,
-  });
-};
+ const hashedPassword = await bcrypt.hash(
+  trainerData.password,
+  10
+);
 
+const trainer = await createTrainer({
+  ...trainerData,
+  password: hashedPassword,
+  tenant: user.tenantId,
+});
+
+const trainerObject = trainer.toObject();
+
+delete trainerObject.password;
+delete trainerObject.__v;
+
+return trainerObject;
+};
+// Trainer login
+const loginTrainerService = async (loginData) => {
+  const { email, phone, password } = loginData;
+
+  const trainer = await findTrainerForLogin({
+    email,
+    phone,
+  });
+
+  if (!trainer) {
+    throw new AppError(
+      "Invalid email/phone or password.",
+      401
+    );
+  }
+
+  // Check trainer status
+  if (trainer.status !== "ACTIVE") {
+    throw new AppError(
+      "Trainer account is inactive.",
+      403
+    );
+  }
+
+  // Compare password
+  const isPasswordMatch = await bcrypt.compare(
+    password,
+    trainer.password
+  );
+
+  if (!isPasswordMatch) {
+    throw new AppError(
+      "Invalid email/phone or password.",
+      401
+    );
+  }
+
+  // Generate JWT
+  const token = generateToken({
+    userId: trainer._id,
+    role: ROLES.TRAINER,
+    tenantId: trainer.tenant,
+    dashboardId: trainer.dashboard,
+  });
+
+  // Remove password from response
+  const trainerObject = trainer.toObject();
+  delete trainerObject.password;
+
+  return {
+    trainer: trainerObject,
+    token,
+  };
+};
+// Get logged-in trainer profile
+const getTrainerProfileService = async (user) => {
+  const trainer = await findTrainerById(user._id);
+
+  if (!trainer) {
+    throw new AppError(
+      "Trainer not found.",
+      404
+    );
+  }
+
+  return trainer;
+};
+// Update logged-in trainer profile
+const updateTrainerProfileService = async (
+  user,
+  updateData
+) => {
+  const trainer = await findTrainerById(user._id);
+
+  if (!trainer) {
+    throw new AppError(
+      "Trainer not found.",
+      404
+    );
+  }
+
+  // Check duplicate phone
+  if (
+    updateData.phone &&
+    updateData.phone !== trainer.phone
+  ) {
+    const existingPhone =
+      await findTrainerByPhone(updateData.phone);
+
+    if (existingPhone) {
+      throw new AppError(
+        "Phone number already exists.",
+        409
+      );
+    }
+  }
+
+  return await updateTrainer(
+    trainer._id,
+    updateData
+  );
+};
 //get all trainers
 const getAllTrainersService = async (user) => {
   // Super Admin
@@ -193,8 +311,93 @@ const softDeleteTrainerService = async (
   return await softDeleteTrainer(trainerId);
 };
 
+// Trainer change own password
+const changeTrainerPasswordService = async (
+  user,
+  passwordData
+) => {
+  const { currentPassword, newPassword } =
+    passwordData;
+
+  // Need password because it has select: false
+  const trainer = await findTrainerForLogin({
+    email: user.email,
+  });
+
+  if (!trainer) {
+    throw new AppError(
+      "Trainer not found.",
+      404
+    );
+  }
+
+  // Verify current password
+  const isPasswordMatch = await bcrypt.compare(
+    currentPassword,
+    trainer.password
+  );
+
+  if (!isPasswordMatch) {
+    throw new AppError(
+      "Current password is incorrect.",
+      400
+    );
+  }
+
+  // Hash new password
+  const hashedPassword = await bcrypt.hash(
+    newPassword,
+    10
+  );
+
+  await updateTrainerPassword(
+    trainer._id,
+    hashedPassword
+  );
+
+  return;
+};
+
+// Admin reset trainer password
+const resetTrainerPasswordService = async (
+  trainerId,
+  newPassword,
+  user
+) => {
+  const trainer = await findTrainerById(trainerId);
+
+  if (!trainer) {
+    throw new AppError("Trainer not found.", 404);
+  }
+
+  // Admin can reset only trainers from own tenant
+  if (
+    user.role !== ROLES.SUPER_ADMIN &&
+    trainer.tenant.toString() !==
+      user.tenantId.toString()
+  ) {
+    throw new AppError("Access denied.", 403);
+  }
+
+  const hashedPassword = await bcrypt.hash(
+    newPassword,
+    10
+  );
+
+  await updateTrainerPassword(
+    trainerId,
+    hashedPassword
+  );
+
+  return;
+};
 export {
   createTrainerService,
+  loginTrainerService,
+  getTrainerProfileService,
+  updateTrainerProfileService,
+  changeTrainerPasswordService,
+  resetTrainerPasswordService,
   getAllTrainersService,
   getTrainerByIdService,
   updateTrainerService,

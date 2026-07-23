@@ -41,6 +41,12 @@ const trainerSchema = new mongoose.Schema(
       unique: true,
     },
 
+    password: {
+  type: String,
+  required: true,
+  select: false,
+},
+
     gender: {
       type: String,
       enum: ["MALE", "FEMALE", "OTHER"],

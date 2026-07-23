@@ -4,6 +4,10 @@ import successResponse from "../../shared/responses/successResponse.js";
 import {
   createTrainerSchema,
   updateTrainerSchema,
+  trainerLoginSchema,
+  updateTrainerProfileSchema,
+  trainerChangePasswordSchema,
+  trainerResetPasswordSchema,
 } from "./trainer.validation.js";
 
 import {
@@ -12,8 +16,77 @@ import {
   getTrainerByIdService,
   updateTrainerService,
   softDeleteTrainerService,
+  loginTrainerService,
+  getTrainerProfileService,
+  updateTrainerProfileService,
+  changeTrainerPasswordService,
+  resetTrainerPasswordService,
 } from "./trainer.service.js";
 
+// Trainer login
+const loginTrainer = asyncHandler(async (req, res) => {
+  const validatedData =
+    trainerLoginSchema.parse(req.body);
+
+  const result = await loginTrainerService(
+    validatedData
+  );
+
+  return successResponse(
+    res,
+    result,
+    "Trainer logged in successfully."
+  );
+});
+// Get logged-in trainer profile
+const getTrainerProfile = asyncHandler(async (req, res) => {
+  const trainer = await getTrainerProfileService(
+    req.user
+  );
+
+  return successResponse(
+    res,
+    trainer,
+    "Trainer profile fetched successfully."
+  );
+});
+// Update logged-in trainer profile
+const updateTrainerProfile = asyncHandler(
+  async (req, res) => {
+    const validatedData =
+      updateTrainerProfileSchema.parse(req.body);
+
+    const trainer =
+      await updateTrainerProfileService(
+        req.user,
+        validatedData
+      );
+
+    return successResponse(
+      res,
+      trainer,
+      "Trainer profile updated successfully."
+    );
+  }
+);
+// Trainer change own password
+const changeTrainerPassword = asyncHandler(
+  async (req, res) => {
+    const validatedData =
+      trainerChangePasswordSchema.parse(req.body);
+
+    await changeTrainerPasswordService(
+      req.user,
+      validatedData
+    );
+
+    return successResponse(
+      res,
+      null,
+      "Password changed successfully."
+    );
+  }
+);
 //create trainer
 const createTrainer = asyncHandler(async (req, res) => {
   // Validate request
@@ -95,11 +168,36 @@ const softDeleteTrainer = asyncHandler(async (req, res) => {
     "Trainer deactivated successfully."
   );
 });
+// Admin reset trainer password
+const resetTrainerPassword = asyncHandler(
+  async (req, res) => {
+    const { trainerId } = req.params;
 
+    const validatedData =
+      trainerResetPasswordSchema.parse(req.body);
+
+    await resetTrainerPasswordService(
+      trainerId,
+      validatedData.newPassword,
+      req.user
+    );
+
+    return successResponse(
+      res,
+      null,
+      "Trainer password reset successfully."
+    );
+  }
+);
 export {
+  loginTrainer,
   createTrainer,
   getAllTrainers,
   getTrainerById,
   updateTrainer,
   softDeleteTrainer,
+  getTrainerProfile,
+  updateTrainerProfile,
+  changeTrainerPassword,
+  resetTrainerPassword,
 };

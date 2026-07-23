@@ -10,11 +10,16 @@ import { ROLES } from "../../constants/roles.js";
 import { PERMISSIONS } from "../../constants/permissions.js";
 
 import {
+  loginTrainer,
   createTrainer,
   getAllTrainers,
   getTrainerById,
   updateTrainer,
   softDeleteTrainer,
+  getTrainerProfile,
+  updateTrainerProfile,
+  changeTrainerPassword,
+  resetTrainerPassword,
 } from "./trainer.controller.js";
 
 const router = express.Router();
@@ -26,7 +31,39 @@ router.get(
   hasPermission(PERMISSIONS.VIEW_TRAINER),
   getAllTrainers
 );
-
+// Trainer login
+router.post(
+  "/login",
+  loginTrainer
+);
+// Trainer own profile
+router.get(
+  "/profile",
+  authenticate,
+  authorize(ROLES.TRAINER),
+  getTrainerProfile
+);
+// Trainer update own profile
+router.put(
+  "/profile",
+  authenticate,
+  authorize(ROLES.TRAINER),
+  updateTrainerProfile
+);
+// Trainer change own password
+router.patch(
+  "/change-password",
+  authenticate,
+  authorize(ROLES.TRAINER),
+  changeTrainerPassword
+);
+// Admin reset trainer password
+router.patch(
+  "/:trainerId/reset-password",
+  authenticate,
+  authorize(ROLES.SUPER_ADMIN, ROLES.ADMIN),
+  resetTrainerPassword
+);
 router.get(
   "/:trainerId",
   authenticate,

@@ -19,7 +19,14 @@ const findTrainerByEmail = async (email) => {
 const findTrainerByPhone = async (phone) => {
   return await Trainer.findOne({ phone });
 };
+// Find trainer for login
+const findTrainerForLogin = async ({ email, phone }) => {
+  if (email) {
+    return await Trainer.findOne({ email }).select("+password");
+  }
 
+  return await Trainer.findOne({ phone }).select("+password");
+};
 // Get all trainers
 const findAllTrainers = async () => {
   return await Trainer.find();
@@ -60,15 +67,30 @@ const softDeleteTrainer = async (trainerId) => {
     }
   );
 };
-
+// Update trainer password
+const updateTrainerPassword = async (
+  trainerId,
+  hashedPassword
+) => {
+  return await Trainer.findByIdAndUpdate(
+    trainerId,
+    { password: hashedPassword },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+};
 export {
   createTrainer,
   findTrainerById,
   findTrainerByEmail,
   findTrainerByPhone,
+  findTrainerForLogin,
   findAllTrainers,
   findTrainersByTenant,
   findTrainersByDashboard,
   updateTrainer,
+  updateTrainerPassword,
   softDeleteTrainer,
 };
